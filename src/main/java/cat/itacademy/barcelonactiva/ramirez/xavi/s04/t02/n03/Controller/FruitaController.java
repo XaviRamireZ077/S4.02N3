@@ -2,7 +2,6 @@ package cat.itacademy.barcelonactiva.ramirez.xavi.s04.t02.n03.Controller;
 
 import cat.itacademy.barcelonactiva.ramirez.xavi.s04.t02.n03.Model.Fruita;
 import cat.itacademy.barcelonactiva.ramirez.xavi.s04.t02.n03.Repository.FruitaRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,65 +18,65 @@ public class FruitaController {
         FruitaRepository fruitaRepository;
 
     @PostMapping("/add")
-    public ResponseEntity<?>/* String */ addFruita(@RequestBody Fruita fruita) {
-        boolean fruitaBuscar = fruitaRepository.existsById(fruita.getId());
+    public ResponseEntity<?>addFruit(@RequestBody Fruita fruita) {
+        boolean findFruit = fruitaRepository.existsById(fruita.getId());
         ResponseEntity<?> responseEntity;
-        if (!fruitaBuscar) {
+        if (!findFruit) {
             fruitaRepository.save(fruita);
-            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body("Fruita afegida amb id : " + fruita.getId());
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body("Fruit " + fruita.getId() + " added");
         } else {
-            responseEntity = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("La fruita amb id " + fruita.getId() + " ya existeix.");
+            responseEntity = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("fruit with id " + fruita.getId() + "already exists");
         }
         return responseEntity;
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?>/*Fruita*/ update(@RequestBody Fruita fruita) {
+    public ResponseEntity<?> update(@RequestBody Fruita fruita) {
         ResponseEntity<?> responseEntity;
-        Optional<Fruita> fruitaActualizar = fruitaRepository.findById(fruita.getId());
-        if (fruitaActualizar.isPresent()) {
-            Fruita _fruita = fruitaActualizar.get();
+        Optional<Fruita> fruitUpdate = fruitaRepository.findById(fruita.getId());
+        if (fruitUpdate.isPresent()) {
+            Fruita _fruita = fruitUpdate.get();
             _fruita.setNom(fruita.getNom());
             _fruita.setQuantitatQuilos(fruita.getQuantitatQuilos());
             fruitaRepository.save(_fruita);
             responseEntity = ResponseEntity.status(HttpStatus.ACCEPTED).body(_fruita);
         } else {
-            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existeix la fruita amb id " + fruita.getId());
+            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("fruit with id " + fruita.getId() + " does not exist");
         }
         return responseEntity;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?>/*String*/ deleteFruita(@PathVariable int id) {
+    public ResponseEntity<?> deleteFruit(@PathVariable int id) {
         ResponseEntity<?> responseEntity;
-        boolean fruitaBuscar = fruitaRepository.existsById(id);
-        if (fruitaBuscar) {
+        boolean findFruit = fruitaRepository.existsById(id);
+        if (findFruit) {
             fruitaRepository.deleteById(id);
-            responseEntity = ResponseEntity.status(HttpStatus.OK).body("Fruita eliminada amb id " + id);
+            responseEntity = ResponseEntity.status(HttpStatus.OK).body("Fruit with id " + id + " deleted");
         } else {
-            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La fruita amb id " + id + " no existeix.");
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fruit with id " + id + " does not exist");
         }
         return responseEntity;
     }
 
     @GetMapping("/getOne/{id}")
-    public ResponseEntity<?>/*Optional<Fruita>*/ getOne(@PathVariable int id) {
+    public ResponseEntity<?> getOne(@PathVariable int id) {
         ResponseEntity<?> responseEntity;
-        boolean fruitaBuscar = fruitaRepository.existsById(id);
-        if (fruitaBuscar) {
+        boolean findFruit = fruitaRepository.existsById(id);
+        if (findFruit) {
             responseEntity = ResponseEntity.status(HttpStatus.FOUND).body(fruitaRepository.findById(id));
         } else {
-            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existeix la fruita amb id " + id);
+            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("fruit with id " + id + " does not exist");
         }
         return responseEntity;
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<?>/*List<Fruita>*/ getAllFruita() {
+    public ResponseEntity<?> getAllFruit() {
         ResponseEntity<?> responseEntity;
-        List<Fruita> lista = fruitaRepository.findAll();
-        if (lista.isEmpty()) {
-            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("La llista es buida.");
+        List<Fruita> list = fruitaRepository.findAll();
+        if (list.isEmpty()) {
+            responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found");
         } else {
             responseEntity =  ResponseEntity.status(HttpStatus.FOUND).body(fruitaRepository.findAll());
         }
