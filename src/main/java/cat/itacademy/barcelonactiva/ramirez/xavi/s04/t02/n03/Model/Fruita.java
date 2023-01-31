@@ -7,20 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-
-
-    //Annotations
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    @Document(collection = "Fruita")
-
-
-
+    @Document(collection = "Fruit")
     public class Fruita {
-
-    //Atributs
 
     @Id
     private int id;
